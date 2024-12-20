@@ -6,7 +6,7 @@ import { ThemeProvider } from "./components/ui/theme-provider";
 import App from "./App";
 
 // Create a Root Layout component
-function RootLayout({ campaign_id }) {
+function RootLayout() {
   return (
     <ThemeProvider
       attribute="class"
@@ -15,7 +15,8 @@ function RootLayout({ campaign_id }) {
       disableTransitionOnChange
     >
       <div className="app-container">
-        <App campaign_id={campaign_id} />
+        <App />
+        {/* You can add other components or routes here */}
       </div>
     </ThemeProvider>
   );

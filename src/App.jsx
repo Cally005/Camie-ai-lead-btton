@@ -2,8 +2,12 @@ import { useState } from "react";
 
 import { FloatingButton } from "./buttons/FloatingButton";
 
-function App({ campaign_id }) {
-  return <FloatingButton campaign_id={campaign_id} />;
+function App() {
+  return (
+    <div>
+      <FloatingButton />
+    </div>
+  );
 }
 
 export default App;
