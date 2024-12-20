@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Moon, Sun } from "lucide-react";
+import Modal from "@/components/app/MeetingModal";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
@@ -21,9 +22,6 @@ export default function ChatInterface() {
   // Create thread on component mount
   useEffect(() => {
     const createThread = async () => {
-
-    
-
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/chat",
@@ -36,12 +34,9 @@ export default function ChatInterface() {
             },
           }
         );
-       
-     
-        
+
         if (response.data.status) {
           setThreadId(response.data.data.id);
-      
         } else {
           console.error("Thread ID creation failed:", response.data);
         }
@@ -49,12 +44,11 @@ export default function ChatInterface() {
         console.error("Error creating thread:", error);
       }
     };
-    
+
     createThread();
   }, []);
 
   const callCamieAIChatAPI = async (userMessage) => {
-
     console.log("Calling Camie AI Chat API with message:", userMessage);
     if (!threadId) {
       console.error("Thread ID not available");
@@ -78,50 +72,46 @@ export default function ChatInterface() {
         }
       );
 
-    
-  
       console.log("API Response:", response.data);
       // Safely extract the AI response
-      let aiResponse = 
-        response.data?.data?.text?.value || 
-        response.data?.data?.text || 
-        response.data?.text || 
+      let aiResponse =
+        response.data?.data?.text?.value ||
+        response.data?.data?.text ||
+        response.data?.text ||
         "I'm sorry, but I couldn't generate a response.";
 
-        console.log("response:", aiResponse);
+      console.log("response:", aiResponse);
 
-        if (response.data.data.bookMeeting === true) {
-          aiResponse = 'I will open a modal to book the meeting, in a few.'
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { user: false, text: aiResponse }
-          ]);
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          aiResponse = 'Let me know when you are done.'
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { user: false, text: aiResponse }
-          ]);
-          
-          await new Promise((resolve) => setTimeout(resolve, 3000));
-          
-          setBookMeeting(true);
-          setLoading(false);
+      if (response.data.data.bookMeeting === true) {
+        aiResponse = "I will open a modal to book the meeting, in a few.";
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { user: false, text: aiResponse },
+        ]);
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        aiResponse = "Let me know when you are done.";
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { user: false, text: aiResponse },
+        ]);
 
-          return
-        }
-        
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
+        setBookMeeting(true);
+        setLoading(false);
+
+        return;
+      }
 
       // Stop loading and add AI message
       setLoading(false);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { user: false, text: aiResponse }
+        { user: false, text: aiResponse },
       ]);
-
     } catch (error) {
       console.error("Error calling Camie AI Chat API:", error);
-    
+
       setLoading(false);
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -132,8 +122,6 @@ export default function ChatInterface() {
       ]);
     }
   };
-
-
 
   const handleSendMessage = () => {
     if (loading || !inputText.trim()) return;
@@ -151,170 +139,137 @@ export default function ChatInterface() {
   // Scroll to bottom effect
   useEffect(() => {
     if (messagesEndRef.current && messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages, loading]);
 
   return (
-    <div className="flex flex-col w-full h-full">
-      {!hideHeader && (
-        <div className="p-4 text-center border-b">
-          <h2 className="text-xl font-bold text-primary/70">Hello, there</h2>
-          <p className="text-sm text-muted-foreground">How can I help you today?</p>
-        </div>
-      )}
-
-      {/* Messages Container with Constrained Scrolling */}
-      <div 
-        ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4"
-        style={{
-          maxHeight: 'calc(100% - 120px)',
-          overflowY: 'auto'
-        }}
-      >
-        {messages.map((message, index) => (
-          <div 
-            key={index} 
-            className={`flex ${
-              message.user 
-                ? 'justify-end' 
-                : 'justify-start'
-            }`}
-          >
-            <div className="flex items-start gap-3 max-w-[90%]">
-              {!message.user && (
-                <img 
-                  src="./camie_logo.png" 
-                  alt="AI" 
-                  className="w-8 h-8 rounded-full shrink-0"
-                />
-              )}
-              <div className={`
-                max-w-full p-3 rounded-lg break-words
-                ${message.user 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted text-foreground'
-                }
-              `}>
-                <p>{message.text}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {loading && (
-          <div className="flex justify-start items-center gap-3">
-            <img 
-              src="/camie_logo.png" 
-              alt="AI" 
-              className="w-8 h-8 rounded-full animate-rotate"
-            />
-            <div className="space-y-2 w-full max-w-xs">
-              <div className="h-3 bg-gradient-to-r from-indigo-500 via-black to-blue-500 bg-[length:200%_100%] animate-animate rounded"></div>
-              <div className="h-3 bg-gradient-to-r from-indigo-500 via-black to-blue-500 bg-[length:200%_100%] rounded animate-animate w-5/6"></div>
-              <div className="h-3 bg-gradient-to-r from-indigo-500 via-black to-blue-500 bg-[length:200%_100%] rounded animate-animate w-4/6"></div>
-            </div>
+    <main className="relative w-full h-full">
+      <div className="flex flex-col w-full h-full">
+        {!hideHeader && (
+          <div className="p-4 text-center border-b">
+            <h2 className="text-xl font-bold text-primary/70">Hello, there</h2>
+            <p className="text-sm text-muted-foreground">
+              How can I help you today?
+            </p>
           </div>
         )}
 
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Area */}
-      <div className="p-4 border-t">
-        <div className="relative">
-          <Input 
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={(e) => {
-              if (loading && e.key === "Enter") {
-                e.preventDefault();
-                return;
-              }
-              if (e.key === "Enter") handleSendMessage();
-            }}
-            placeholder="Ask Camie..."
-            disabled={loading}
-            className={`pr-20 ${
-              loading 
-                ? 'opacity-50 cursor-not-allowed' 
-                : ''
-            }`}
-          />
-          <div className="absolute right-0 top-0 h-full flex items-center space-x-2 pr-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-              className="hover:bg-accent"
-            >
-              {resolvedTheme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleSendMessage}
-              disabled={!inputText.trim() || loading}
-              className={`hover:bg-primary/10 ${
-                loading 
-                  ? 'opacity-50 cursor-not-allowed' 
-                  : ''
+        {/* Messages Container with Constrained Scrolling */}
+        <div
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto p-4 space-y-4"
+          style={{
+            maxHeight: "calc(100% - 120px)",
+            overflowY: "auto",
+          }}
+        >
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex ${
+                message.user ? "justify-end" : "justify-start"
               }`}
             >
-              <Send className="h-5 w-5 text-primary" />
-            </Button>
-          </div>
-        </div>
-      </div>
-
-        {/* Modal remains the same */}
-        <Modal
-          isOpen={bookMeeeting}
-          setOpen={setBookMeeting}
-         
-        />
-    </div>
-  );
-}
-
- // Modal component remains unchanged
-  const Modal = ({ isOpen, setOpen })=> {
-    const closeModal = () => {
-      setOpen(false);
-      
-    };
-  
-    return (
-      <div>
-        {/* Modal */}
-        {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-8 rounded-lg w-full max-w-3xl relative">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Book a Meeting</h2>
-                <button onClick={closeModal} className="text-gray-600 text-xl">
-                  &times;
-                </button>
-              </div>
-              <p className="mt-4">Click below to schedule your meeting:</p>
-  
-              {/* Calendly iframe */}
-              <div className="mt-4">
-                <iframe
-                  src="https://tidycal.com/camie/camieai"
-                  width="100%"
-                  height="600"
-                  frameBorder="0"
-                  title="Calendly Scheduler"
-                  className="rounded-lg"
-                ></iframe>
+              <div className="flex items-start gap-3 max-w-[90%]">
+                {!message.user && (
+                  <img
+                    src="./camie_logo.png"
+                    alt="AI"
+                    className="w-8 h-8 rounded-full shrink-0"
+                  />
+                )}
+                <div
+                  className={`
+                max-w-full p-3 rounded-lg break-words
+                ${
+                  message.user
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-foreground"
+                }
+              `}
+                >
+                  <p>{message.text}</p>
+                </div>
               </div>
             </div>
+          ))}
+
+          {loading && (
+            <div className="flex justify-start items-center gap-3">
+              <img
+                src="/camie_logo.png"
+                alt="AI"
+                className="w-8 h-8 rounded-full animate-rotate"
+              />
+              <div className="space-y-2 w-full max-w-xs">
+                <div className="h-3 bg-gradient-to-r from-indigo-500 via-black to-blue-500 bg-[length:200%_100%] animate-animate rounded"></div>
+                <div className="h-3 bg-gradient-to-r from-indigo-500 via-black to-blue-500 bg-[length:200%_100%] rounded animate-animate w-5/6"></div>
+                <div className="h-3 bg-gradient-to-r from-indigo-500 via-black to-blue-500 bg-[length:200%_100%] rounded animate-animate w-4/6"></div>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area */}
+        <div className="p-4 border-t">
+          <div className="relative">
+            <Input
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (loading && e.key === "Enter") {
+                  e.preventDefault();
+                  return;
+                }
+                if (e.key === "Enter") handleSendMessage();
+              }}
+              placeholder="Ask Camie..."
+              disabled={loading}
+              className={`pr-20 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            />
+            <div className="absolute right-0 top-0 h-full flex items-center space-x-2 pr-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() =>
+                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                }
+                className="hover:bg-accent"
+              >
+                {resolvedTheme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSendMessage}
+                disabled={!inputText.trim() || loading}
+                className={`hover:bg-primary/10 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                <Send className="h-5 w-5 text-primary" />
+              </Button>
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* Modal remains the same */}
       </div>
-    );
-  };
-
-
+      <Modal
+        isOpen={bookMeeeting}
+        setOpen={setBookMeeting}
+        className="absolute  w-full h-full"
+      />
+    </main>
+  );
+}

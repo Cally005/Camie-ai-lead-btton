@@ -1,12 +1,12 @@
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
 import { FloatingButton } from "./buttons/FloatingButton";
 import { ThemeProvider } from "./components/ui/theme-provider";
-import App from './App';
+import App from "./App";
 
 // Create a Root Layout component
-function RootLayout() {
+function RootLayout({ campaign_id }) {
   return (
     <ThemeProvider
       attribute="class"
@@ -15,17 +15,15 @@ function RootLayout() {
       disableTransitionOnChange
     >
       <div className="app-container">
-      
-        <App/>
-        {/* You can add other components or routes here */}
+        <App campaign_id={campaign_id} />
       </div>
     </ThemeProvider>
   );
 }
 
 // Replace the existing App import with the RootLayout
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RootLayout />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
