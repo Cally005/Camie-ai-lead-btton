@@ -175,7 +175,7 @@ export default function ChatInterface() {
               <div className="flex items-start gap-3 max-w-[90%]">
                 {!message.user && (
                   <img
-                    src="/src/assets/camie_logo.png"
+                    src="src/assets/camie_logo.png"
                     alt="AI"
                     className="w-8 h-8 rounded-full shrink-0"
                   />

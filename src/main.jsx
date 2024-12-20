@@ -1,7 +1,6 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
 import "./index.css";
-import { FloatingButton } from "./buttons/FloatingButton";
+import ReactDOM from "react-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import App from "./App";
 
@@ -9,7 +8,7 @@ import App from "./App";
 function camieAIFloatingButton({ campaign_id }) {
   console.log("Initializing Button Widget with: " + campaign_id);
 
-  if (campaign_id) {
+  if (!campaign_id) {
     console.warn("Campaign Id must be provided, contact the developer.");
     return;
   }
