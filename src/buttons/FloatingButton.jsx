@@ -85,6 +85,11 @@ export function FloatingButton({ campaign_id }) {
     setIsOpen(false);
   };
 
+  const handleModalClose = () => {
+    setModalType("");
+    setIsVisible(true); // Show button when closing chat/voice modal
+  };
+
   return (
     <div>
       {isVisible && (
@@ -154,7 +159,7 @@ export function FloatingButton({ campaign_id }) {
       </Dialog>
 
       {modalType === "chat" && (
-        <Dialog open={true} onOpenChange={() => setModalType("")}>
+        <Dialog open={true} onOpenChange={handleModalClose}>
           <DialogContent className="flex items-center justify-center rounded-lg w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px]">
             <ChatInterface />
           </DialogContent>
@@ -162,14 +167,11 @@ export function FloatingButton({ campaign_id }) {
       )}
 
       {modalType === "voice" && (
-        <Dialog open={true} onOpenChange={() => setModalType("")}>
+        <Dialog open={true} onOpenChange={handleModalClose}>
           <DialogContent className="flex flex-col items-center gap-4 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-8">
             <h2 className="text-xl md:text-2xl font-semibold text-center">
               Tap to speak
             </h2>
-            <div className="flex justify-end items-end">
-              <ModeToggle />
-            </div>
             <VoiceInterface />
           </DialogContent>
         </Dialog>
