@@ -266,7 +266,7 @@ export default function VoiceInterface() {
 
           {/* Theme toggle button */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
             onClick={() =>
               setTheme(resolvedTheme === "dark" ? "light" : "dark")
