@@ -23,7 +23,7 @@ const BubbleText = ({ text, isVisible }) => {
 };
 
 // Floating Button Component
-export function FloatingButton() {
+export function FloatingButton({ campaign_id }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [modalType, setModalType] = useState("");
@@ -39,7 +39,7 @@ export function FloatingButton() {
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/leads-note",
-          { campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" },
+          { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
 
