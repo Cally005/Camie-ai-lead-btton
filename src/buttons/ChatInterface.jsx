@@ -199,7 +199,7 @@ export default function ChatInterface() {
           {loading && (
             <div className="flex justify-start items-center gap-3">
               <img
-                src="/camie_logo.png"
+                src="src/assets/camie_logo.png"
                 alt="AI"
                 className="w-8 h-8 rounded-full animate-rotate"
               />
