@@ -123,7 +123,7 @@ export function FloatingButton() {
 
       {/* Communication Options Dialog */}
       <Dialog open={isOpen} onOpenChange={handleDialogClose}>
-        <DialogContent className="flex flex-col items-center gap-4 md:gap-8 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1200px] p-4 md:p-10">
+        <DialogContent className="flex flex-col items-center gap-4 md:gap-8 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1200px] p-4 md:p-10 dark:bg-gray-900 dark:text-white">
           <h2 className="text-xl md:text-3xl font-semibold text-center mb-4 md:mb-8">
             How do you want us to communicate?
           </h2>
@@ -132,33 +132,33 @@ export function FloatingButton() {
             autoPlay
             loop
             muted
-            className="h-32 md:h-64 w-full object-contain rounded-xl mb-2"
+            className="h-32 md:h-64 w-full object-contain rounded-sm mb-2   "
           >
             <source src="/src/assets/hi.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
 
-          <div className="flex flex-col md:flex-row w-full justify-between gap-4 md:gap-10 mt-4">
+          <div className="flex flex-col md:flex-row w-full justify-between gap-4 md:gap-10 mt-4 ">
             <div
-              className="flex-1 p-4 md:p-8 bg-gray-100 rounded-lg shadow-lg flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer hover:bg-primary/10 transition-all"
+              className="flex-1 p-4 md:p-8 bg-gray-100 rounded-lg shadow-lg flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer hover:bg-primary/10 transition-all dark:bg-gray-800"
               onClick={() => handleSelection("chat")}
             >
               <MessageCircleIcon className="h-8 w-8 md:h-16 md:w-16 text-primary" />
               <h3 className="text-lg md:text-xl font-semibold">Chat with Me</h3>
-              <p className="text-xs md:text-base text-gray-600 text-center">
+              <p className="text-xs md:text-base text-gray-600 text-center  dark:text-white">
                 Text-based communication for quick exchanges.
               </p>
             </div>
 
             <div
-              className="flex-1 p-4 md:p-8 bg-gray-100 rounded-lg shadow-lg flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer hover:bg-primary/10 transition-all"
+              className="flex-1 p-4 md:p-8 bg-gray-100 rounded-lg shadow-lg flex flex-col items-center justify-center gap-2 md:gap-4 cursor-pointer hover:bg-primary/10 transition-all  dark:bg-gray-800"
               onClick={() => handleSelection("voice")}
             >
               <MicIcon className="h-8 w-8 md:h-16 md:w-16 text-primary" />
               <h3 className="text-lg md:text-xl font-semibold">
                 Talk with Audio
               </h3>
-              <p className="text-xs md:text-base text-gray-600 text-center">
+              <p className="text-xs md:text-base text-gray-600 text-center  dark:text-white">
                 Voice-based interaction for more personal conversations.
               </p>
             </div>
@@ -178,7 +178,7 @@ export function FloatingButton() {
       {/* Voice Modal */}
       {modalType === "voice" && (
         <Dialog open={true} onOpenChange={handleModalClose}>
-          <DialogContent className="flex flex-col items-center gap-4 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-8">
+          <DialogContent className="flex flex-col items-center gap-4 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-8 dark:bg-gray-900 dark:text-white">
             <h2 className="text-xl md:text-2xl font-semibold text-center">
               Tap to speak
             </h2>
