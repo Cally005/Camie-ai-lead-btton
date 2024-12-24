@@ -82,9 +82,9 @@ body {
   * {
     @apply border-border;
   }
-  body {
+  /* body {
     @apply bg-background text-foreground;
-  }
+  } */
 }
 
 @layer base {
@@ -104,8 +104,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   :root {
@@ -160,12 +158,12 @@ body {
     --chart-3: 216 92% 60%;
     --chart-4: 210 98% 78%;
     --chart-5: 212 97% 87%;
-    }
+  }
 }
 
-
 @keyframes waveLeft {
-  0%, 100% {
+  0%,
+  100% {
     width: 2px;
     opacity: 0.5;
     transform: translateX(0);
@@ -178,7 +176,8 @@ body {
 }
 
 @keyframes waveRight {
-  0%, 100% {
+  0%,
+  100% {
     width: 2px;
     opacity: 0.5;
     transform: translateX(0);
@@ -196,28 +195,28 @@ body {
   transition: all 0.3s ease;
 }
 
-.left-wave-1 { 
+.left-wave-1 {
   animation: waveLeft 1.5s infinite;
-  animation-delay: 0s; 
+  animation-delay: 0s;
 }
-.left-wave-2 { 
+.left-wave-2 {
   animation: waveLeft 1.5s infinite;
-  animation-delay: 0.3s; 
+  animation-delay: 0.3s;
 }
-.left-wave-3 { 
+.left-wave-3 {
   animation: waveLeft 1.5s infinite;
-  animation-delay: 0.6s; 
+  animation-delay: 0.6s;
 }
 
-.right-wave-1 { 
+.right-wave-1 {
   animation: waveRight 1.5s infinite;
-  animation-delay: 0s; 
+  animation-delay: 0s;
 }
-.right-wave-2 { 
+.right-wave-2 {
   animation: waveRight 1.5s infinite;
-  animation-delay: 0.3s; 
+  animation-delay: 0.3s;
 }
-.right-wave-3 { 
+.right-wave-3 {
   animation: waveRight 1.5s infinite;
-  animation-delay: 0.6s; 
+  animation-delay: 0.6s;
 }
