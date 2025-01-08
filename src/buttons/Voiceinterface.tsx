@@ -357,7 +357,7 @@ export default function VoiceInterface() {
             )}
           </Button>
         </div>
-      </div> : "loading"}
+      </div> : "loading..."}
 
       {/* Modal remains the same */}
       <Modal
