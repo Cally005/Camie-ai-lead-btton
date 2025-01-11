@@ -29,6 +29,7 @@ export default function ChatInterface() {
         "https://camie-ai.onrender.com/api/v0/ai/chat",
         {
           action: "start-stream",
+          campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
           thread_id: threadId,
           question: "start_conversation", // Special trigger for initial message
         },
@@ -68,6 +69,7 @@ export default function ChatInterface() {
           "https://camie-ai.onrender.com/api/v0/ai/chat",
           {
             action: "create-thread",
+            campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
           },
           {
             headers: {
@@ -107,6 +109,7 @@ export default function ChatInterface() {
           action: "start-stream",
           thread_id: threadId,
           question: userMessage,
+          campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
         },
         {
           headers: {
@@ -164,8 +167,8 @@ export default function ChatInterface() {
     }
   };
 
-   // Fetch CTA text once
-   useEffect(() => {
+  // Fetch CTA text once
+  useEffect(() => {
     const fetchCtaText = async () => {
       try {
         const response = await axios.post(
@@ -174,7 +177,7 @@ export default function ChatInterface() {
           { headers: { "Content-Type": "application/json" } }
         );
         setCtaText(response.data.data.call_to_action || "Book Appointment");
-        console.log(response)
+        console.log(response);
       } catch (error) {
         console.error("Failed to fetch CTA text:", error);
         setCtaText(response.data.data.call_to_action);
@@ -184,12 +187,9 @@ export default function ChatInterface() {
     fetchCtaText();
   }, []);
 
-
   const handleSelection = () => {
     setBookMeeting(true);
-  
   };
-
 
   const handleSendMessage = () => {
     if (loading || !inputText.trim()) return;
@@ -327,11 +327,11 @@ export default function ChatInterface() {
             </div>
           </div>
           <button
-                onClick={() => handleSelection()}
-                  className="w-full bg-primary text-white py-2 px-4 mt-6 rounded-md hover:bg-primary/90 transition-colors"
-                >
-                  {ctaText}
-            </button>
+            onClick={() => handleSelection()}
+            className="w-full bg-primary text-white py-2 px-4 mt-6 rounded-md hover:bg-primary/90 transition-colors"
+          >
+            {ctaText}
+          </button>
         </div>
       </div>
       <Modal
@@ -342,39 +342,6 @@ export default function ChatInterface() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 

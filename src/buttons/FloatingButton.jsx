@@ -9,11 +9,13 @@ import Modal from "@/components/app/MeetingModal";
 const BubbleText = ({ text, isVisible }) => {
   return isVisible ? (
     <div className="absolute bottom-full mb-4 right-0 z-50 w-48 md:w-64 transform translate-y-[-8px]">
-      <div className="relative bg-white text-primary border border-primary px-4 py-3 rounded-3xl shadow-lg text-xs md:text-sm
+      <div
+        className="relative bg-white text-primary border border-primary px-4 py-3 rounded-3xl shadow-lg text-xs md:text-sm
         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0 
         before:border-l-[6px] before:border-l-transparent 
         before:border-t-[6px] before:border-t-primary 
-        before:border-r-[6px] before:border-r-transparent">
+        before:border-r-[6px] before:border-r-transparent"
+      >
         {text}
       </div>
     </div>
@@ -45,7 +47,7 @@ export function FloatingButton() {
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/leads-note",
-          { campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" },
+          { campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76" },
           { headers: { "Content-Type": "application/json" } }
         );
 
@@ -80,7 +82,9 @@ export function FloatingButton() {
   useEffect(() => {
     const fetchCtaText = async () => {
       try {
-        const response = await axios.get("https://camie-ai.onrender.com/api/v0/ai/call-to-action");
+        const response = await axios.get(
+          "https://camie-ai.onrender.com/api/v0/ai/call-to-action"
+        );
         setCtaText(response.data.data.call_to_action || "Book Appointment");
       } catch (error) {
         console.error("Failed to fetch CTA text:", error);
@@ -131,13 +135,13 @@ export function FloatingButton() {
       {showBox && (
         <div className="fixed top-4 right-4 md:top-8 md:right-8 z-50">
           <div className="bg-white rounded-lg shadow-lg p-4 max-w-md relative">
-            <button 
+            <button
               onClick={handleCloseBox}
               className="absolute -top-2 -right-2 bg-gray-100 hover:bg-gray-200 rounded-full p-1 shadow-md transition-colors"
             >
               <XIcon className="h-4 w-4 text-gray-600" />
             </button>
-            
+
             <div className="flex items-start gap-4">
               <div className="w-16 h-16 flex-shrink-0">
                 <img
@@ -154,7 +158,7 @@ export function FloatingButton() {
                   onClick={handleButtonClick}
                   className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors"
                 >
-                Learn More
+                  Learn More
                 </button>
               </div>
             </div>
@@ -191,13 +195,23 @@ export function FloatingButton() {
             className="h-24 md:h-48 w-full object-contain rounded-sm"
           />
 
-          <div className={`grid grid-cols-1 ${ctaText === "Book Appointment" ? 'md:grid-cols-3' : 'md:grid-cols-2'} w-full gap-4 md:gap-6 mt-28 px-2 md:px-4 ${ctaText !== "Book Appointment" ? 'md:w-2/3 mx-auto' : ''}`}>
+          <div
+            className={`grid grid-cols-1 ${
+              ctaText === "Book Appointment"
+                ? "md:grid-cols-3"
+                : "md:grid-cols-2"
+            } w-full gap-4 md:gap-6 mt-28 px-2 md:px-4 ${
+              ctaText !== "Book Appointment" ? "md:w-2/3 mx-auto" : ""
+            }`}
+          >
             <div
               className="p-3 md:p-6 bg-gray-100 rounded-lg shadow-lg flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-primary/10 transition-all dark:bg-gray-800"
               onClick={() => handleSelection("chat")}
             >
               <MessageCircleIcon className="h-6 w-6 md:h-12 md:w-12 text-primary" />
-              <h3 className="text-base md:text-lg font-semibold">Chat with Me</h3>
+              <h3 className="text-base md:text-lg font-semibold">
+                Chat with Me
+              </h3>
               <p className="text-xs md:text-sm text-gray-600 text-center dark:text-white">
                 Text-based communication for quick exchanges.
               </p>
@@ -208,7 +222,9 @@ export function FloatingButton() {
               onClick={() => handleSelection("voice")}
             >
               <MicIcon className="h-6 w-6 md:h-12 md:w-12 text-primary" />
-              <h3 className="text-base md:text-lg font-semibold">Talk with Audio</h3>
+              <h3 className="text-base md:text-lg font-semibold">
+                Talk with Audio
+              </h3>
               <p className="text-xs md:text-sm text-gray-600 text-center dark:text-white">
                 Voice-based interaction for more personal conversations.
               </p>
@@ -220,7 +236,9 @@ export function FloatingButton() {
                 onClick={() => handleSelection("appointment")}
               >
                 <CalendarIcon className="h-6 w-6 md:h-12 md:w-12 text-primary" />
-                <h3 className="text-base md:text-lg font-semibold">{ctaText}</h3>
+                <h3 className="text-base md:text-lg font-semibold">
+                  {ctaText}
+                </h3>
                 <p className="text-xs md:text-sm text-gray-600 text-center dark:text-white">
                   Schedule a time that works best for you.
                 </p>
@@ -278,9 +296,9 @@ export default FloatingButton;
 //   return isVisible ? (
 //     <div className="absolute bottom-full mb-4 right-0 z-50 w-48 md:w-64 transform translate-y-[-8px]">
 //       <div className="relative bg-white text-primary border border-primary px-4 py-3 rounded-3xl shadow-lg text-xs md:text-sm
-//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0 
-//         before:border-l-[6px] before:border-l-transparent 
-//         before:border-t-[6px] before:border-t-primary 
+//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0
+//         before:border-l-[6px] before:border-l-transparent
+//         before:border-t-[6px] before:border-t-primary
 //         before:border-r-[6px] before:border-r-transparent">
 //         {text}
 //       </div>
@@ -400,13 +418,13 @@ export default FloatingButton;
 //       {showBox && (
 //         <div className="fixed top-4 right-4 md:top-8 md:right-8 z-50">
 //           <div className="bg-white rounded-lg shadow-lg p-4 max-w-md relative">
-//             <button 
+//             <button
 //               onClick={handleCloseBox}
 //               className="absolute -top-2 -right-2 bg-gray-100 hover:bg-gray-200 rounded-full p-1 shadow-md transition-colors"
 //             >
 //               <XIcon className="h-4 w-4 text-gray-600" />
 //             </button>
-            
+
 //             <div className="flex items-start gap-4">
 //               <div className="w-16 h-16 flex-shrink-0">
 //                 <img
@@ -536,8 +554,6 @@ export default FloatingButton;
 
 // export default FloatingButton;
 
-
-
 //works well just want to add the round buton
 // import { useEffect, useState, useRef } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -606,7 +622,6 @@ export default FloatingButton;
 //     fetchCtaText();
 //   }, []);
 
-
 //   useEffect(() =>{
 //     if(meetingResponse){
 //       console.log(meetingResponse)
@@ -654,14 +669,14 @@ export default FloatingButton;
 //       {isVisible && (
 //         <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50">
 //           <div className="bg-white rounded-lg shadow-lg p-4 max-w-md relative">
-//             <button 
+//             <button
 //               onClick={handleCloseBox}
 //               className="absolute -top-2 -right-2 bg-gray-100 hover:bg-gray-200 rounded-full p-1 shadow-md transition-colors"
 //               aria-label="Close"
 //             >
 //               <XIcon className="h-4 w-4 text-gray-600" />
 //             </button>
-            
+
 //             <div className="flex items-start gap-4">
 //               <div className="w-16 h-16 flex-shrink-0">
 //                 <img
@@ -777,14 +792,6 @@ export default FloatingButton;
 //   );
 // }
 
-
-
-
-
-
-
-
-
 // import { useEffect, useState, useRef } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
 // import { MessageCircleIcon, MicIcon, XIcon, CalendarIcon } from "lucide-react";
@@ -811,7 +818,7 @@ export default FloatingButton;
 //           { campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" },
 //           { headers: { "Content-Type": "application/json" } }
 //         );
-        
+
 //         // Fetch CTA text (replace with your actual endpoint)
 //         const ctaResponse = await axios.get(
 //           "https://your-api-endpoint/cta-text"
@@ -870,14 +877,14 @@ export default FloatingButton;
 //       {isVisible && (
 //         <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50">
 //           <div className="bg-white rounded-lg shadow-lg p-4 max-w-md relative">
-//             <button 
+//             <button
 //               onClick={handleCloseBox}
 //               className="absolute -top-2 -right-2 bg-gray-100 hover:bg-gray-200 rounded-full p-1 shadow-md transition-colors"
 //               aria-label="Close"
 //             >
 //               <XIcon className="h-4 w-4 text-gray-600" />
 //             </button>
-            
+
 //             <div className="flex items-start gap-4">
 //               <div className="w-16 h-16 flex-shrink-0">
 //                 <img
@@ -970,17 +977,16 @@ export default FloatingButton;
 //         </Dialog>
 //       )}
 
-
 // {modalType === "appointment" && (
 //     <Dialog open={true} onOpenChange={handleModalClose}>
-    
+
 //         <Modal
 //           isOpen={bookMeeeting}
 //           setOpen={setBookMeeting}
 //           className="w-full h-full"
 //           onclick={handleDialogClose}  // Add this prop to handle modal closing
 //         />
- 
+
 //     </Dialog>
 //   )}
 
@@ -988,8 +994,7 @@ export default FloatingButton;
 //   );
 // }
 
-
-// cancel button added 
+// cancel button added
 // import { useEffect, useState, useRef } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
 // import { MessageCircleIcon, MicIcon, XIcon } from "lucide-react";
@@ -1066,14 +1071,14 @@ export default FloatingButton;
 //         <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50">
 //           <div className="bg-white rounded-lg shadow-lg p-4 max-w-md relative">
 //             {/* Close Button */}
-//             <button 
+//             <button
 //               onClick={handleCloseBox}
 //               className="absolute -top-2 -right-2 bg-gray-100 hover:bg-gray-200 rounded-full p-1 shadow-md transition-colors"
 //               aria-label="Close"
 //             >
 //               <XIcon className="h-4 w-4 text-gray-600" />
 //             </button>
-            
+
 //             <div className="flex items-start gap-4">
 //               <div className="w-16 h-16 flex-shrink-0">
 //                 <img
@@ -1157,23 +1162,6 @@ export default FloatingButton;
 //     </div>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // working well just that no close button
 // import { useEffect, useState, useRef } from "react";
@@ -1333,29 +1321,6 @@ export default FloatingButton;
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //working perfectly
 // import { useEffect, useState, useRef } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -1370,9 +1335,9 @@ export default FloatingButton;
 //     <div className="absolute bottom-full mb-4 right-0 z-50 w-48 md:w-64 transform translate-y-[-8px]">
 //       <div
 //         className="relative bg-white text-primary border border-primary px-4 py-3 rounded-3xl shadow-lg text-xs md:text-sm
-//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0 
-//         before:border-l-[6px] before:border-l-transparent 
-//         before:border-t-[6px] before:border-t-primary 
+//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0
+//         before:border-l-[6px] before:border-l-transparent
+//         before:border-t-[6px] before:border-t-primary
 //         before:border-r-[6px] before:border-r-transparent"
 //       >
 //         {text}
@@ -1529,21 +1494,7 @@ export default FloatingButton;
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//working well just a bit of responsiveness 
+//working well just a bit of responsiveness
 // import { useEffect, useState, useRef } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
 // import { MessageCircleIcon, MicIcon } from "lucide-react";
@@ -1557,9 +1508,9 @@ export default FloatingButton;
 //     <div className="absolute bottom-full mb-4 right-0 z-50 w-48 md:w-64 transform translate-y-[-8px]">
 //       <div
 //         className="relative bg-white text-primary border border-primary px-4 py-3 rounded-3xl shadow-lg text-xs md:text-sm
-//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0 
-//         before:border-l-[6px] before:border-l-transparent 
-//         before:border-t-[6px] before:border-t-primary 
+//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0
+//         before:border-l-[6px] before:border-l-transparent
+//         before:border-t-[6px] before:border-t-primary
 //         before:border-r-[6px] before:border-r-transparent"
 //       >
 //         {text}
@@ -1716,39 +1667,6 @@ export default FloatingButton;
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import { useEffect, useState, useRef } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
 // import { MessageCircleIcon, MicIcon } from "lucide-react";
@@ -1762,9 +1680,9 @@ export default FloatingButton;
 //     <div className="absolute bottom-full mb-4 right-0 z-50 w-48 md:w-64 transform translate-y-[-8px]">
 //       <div
 //         className="relative bg-white text-primary border border-primary px-4 py-3 rounded-3xl shadow-lg text-xs md:text-sm
-//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0 
-//         before:border-l-[6px] before:border-l-transparent 
-//         before:border-t-[6px] before:border-t-primary 
+//         before:content-[''] before:absolute before:bottom-[-6px] before:right-8 before:w-0 before:h-0
+//         before:border-l-[6px] before:border-l-transparent
+//         before:border-t-[6px] before:border-t-primary
 //         before:border-r-[6px] before:border-r-transparent"
 //       >
 //         {text}
