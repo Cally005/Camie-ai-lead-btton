@@ -82,8 +82,10 @@ export function FloatingButton() {
   useEffect(() => {
     const fetchCtaText = async () => {
       try {
-        const response = await axios.get(
-          "https://camie-ai.onrender.com/api/v0/ai/call-to-action"
+        const response = await axios.post(
+          "https://camie-ai.onrender.com/api/v0/ai/call-to-action",
+          { campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76" },
+          { headers: { "Content-Type": "application/json" } }
         );
         setCtaText(response.data.data.call_to_action || "Book Appointment");
       } catch (error) {
