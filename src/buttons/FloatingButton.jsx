@@ -113,7 +113,10 @@ export function FloatingButton({ campaign_id }) {
                 muted
                 className="h-full w-full object-contain rounded-full"
               >
-                <source src="/src/assets/hi.mp4" type="video/mp4" />
+                <source
+                  src="https://camie-ace.github.io/camie-animated-box/hi.mp4"
+                  type="video/mp4"
+                />
                 Your browser does not support the video tag.
               </video>
             </button>
