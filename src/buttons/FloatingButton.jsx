@@ -27,7 +27,7 @@ export function FloatingButton() {
   const [dynamicText, setDynamicText] = useState("");
   const [bubbleText, setBubbleText] = useState("");
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
-  const [ctaText, setCtaText] = useState("Book Appointment");
+  const [ctaText, setCtaText] = useState("");
   const [bookMeeting, setBookMeeting] = useState(false);
   const [meetingResponse, setMeetingResponse] = useState(null);
   const timers = useRef([]);
@@ -80,8 +80,8 @@ export function FloatingButton() {
   useEffect(() => {
     const fetchCtaText = async () => {
       try {
-        const response = await axios.get("https://your-api-endpoint/cta-text");
-        setCtaText(response.data.cta || "Book Appointment");
+        const response = await axios.get("https://camie-ai.onrender.com/api/v0/ai/call-to-action");
+        setCtaText(response.data.data.call_to_action || "Book Appointment");
       } catch (error) {
         console.error("Failed to fetch CTA text:", error);
       }

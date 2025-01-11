@@ -71,10 +71,12 @@ export default function VoiceInterface() {
   useEffect(() => {
     const fetchCtaText = async () => {
       try {
-        const response = await axios.get(
-          "https://your-api-endpoint/cta-text"
+        const response = await axios.post(
+          "https://camie-ai.onrender.com/api/v0/ai/call-to-action",
+          { campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" },
+          { headers: { "Content-Type": "application/json" } }
         );
-        setCtaText(response.data.cta || "Book Appointment");
+        setCtaText(response.data.data.call_to_action|| "Book Appointment");
       } catch (error) {
         console.error("Failed to fetch CTA text:", error);
         setCtaText("Book Appointment");
