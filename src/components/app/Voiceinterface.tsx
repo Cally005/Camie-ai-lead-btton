@@ -8,7 +8,7 @@ import { Mic, MicOff, Moon, Sun } from "lucide-react";
 import Modal from "./MeetingModal";
 import axios from "axios";
 
-export function VoiceInterface() {
+export function VoiceInterface({ campaign_id }: { campaign_id: string }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [micPermission, setMicPermission] = useState<boolean | null>(null);
   const { resolvedTheme, setTheme } = useTheme();
@@ -76,7 +76,7 @@ export function VoiceInterface() {
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/call-to-action",
-          { campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" },
+          { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
         setCtaText(response.data.data.call_to_action || "Book Appointment");
@@ -96,7 +96,7 @@ export function VoiceInterface() {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/voice",
           {
-            campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
+            campaign_id,
           },
           {
             headers: {
@@ -126,7 +126,7 @@ export function VoiceInterface() {
       setConnecting(false);
       setConnected(false);
       // Use the ref to access the Vapi instance
-      await vapiRef.current.stop();
+      vapiRef.current.stop();
       console.log("Call ended successfully");
     } catch (error) {
       console.error("Error ending call:", error);

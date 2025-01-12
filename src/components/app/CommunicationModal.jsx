@@ -21,6 +21,7 @@ const CommunicationModal = ({
   setBookMeeting,
   setMeetingResponse,
   handleSelection,
+  campaign_id,
 }) => {
   const CommunicationOption = ({ icon: Icon, title, description, onClick }) => (
     <div
@@ -143,9 +144,14 @@ const CommunicationModal = ({
         <Dialog open={true} onOpenChange={handleModalClose}>
           <DialogContent className="flex items-center justify-center rounded-lg w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px] dark:bg-gray-900 dark:text-white">
             {modalType === "chat" && (
-              <ChatInterface handleModalClose={handleModalClose} />
+              <ChatInterface
+                handleModalClose={handleModalClose}
+                campaign_id={campaign_id}
+              />
             )}
-            {modalType === "voice" && <VoiceInterface />}
+            {modalType === "voice" && (
+              <VoiceInterface campaign_id={campaign_id} />
+            )}
             {modalType === "appointment" && (
               <Modal
                 isOpen={bookMeeting}
