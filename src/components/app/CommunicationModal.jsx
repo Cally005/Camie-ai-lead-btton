@@ -109,7 +109,7 @@ const CommunicationModal = ({
           </div>
 
           <div
-            className={`grid sm:grid-cols-1 md:grid-cols-${
+            className={`grid sm:grid-cols-3 md:grid-cols-${
               ctaText === "Book Appointment" ? "3" : "2"
             } gap-4 w-full mt-4`}
           >

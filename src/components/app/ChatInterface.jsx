@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Moon, Sun } from "lucide-react";
 import Modal from "@/components/app/MeetingModal";
+import ReactMarkdown from "react-markdown";
 
 export function ChatInterface({ campaign_id }) {
   const [messages, setMessages] = useState([]);
@@ -257,7 +258,7 @@ export function ChatInterface({ campaign_id }) {
 
         <div
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto p-4 space-y-4"
+          className="flex-1 overflow-y-auto p-4 pl-0 space-y-4"
           style={{
             maxHeight: "calc(100% - 120px)",
             overflowY: "auto",
@@ -288,7 +289,51 @@ export function ChatInterface({ campaign_id }) {
                 }
               `}
                 >
-                  <p>{message.text}</p>
+                  <ReactMarkdown
+                    components={{
+                      p: ({ node, ...props }) => (
+                        <p className="mb-2" {...props} />
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul className="list-disc ml-4 mb-2" {...props} />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol className="list-decimal ml-4 mb-2" {...props} />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li className="mb-1" {...props} />
+                      ),
+                      h1: ({ node, ...props }) => (
+                        <h1 className="text-xl font-bold mb-2" {...props} />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h2 className="text-lg font-bold mb-2" {...props} />
+                      ),
+                      h3: ({ node, ...props }) => (
+                        <h3 className="text-md font-bold mb-2" {...props} />
+                      ),
+                      a: ({ node, ...props }) => (
+                        <a className="text-md mb-2 underline" {...props} />
+                      ),
+                      code: ({ node, inline, ...props }) =>
+                        inline ? (
+                          <code
+                            style={{ color: "white" }}
+                            className="bg-gray-200 dark:bg-gray-600 px-1 rounded"
+                            {...props}
+                          />
+                        ) : (
+                          <pre
+                            style={{ color: "white" }}
+                            className="bg-gray-200 dark:bg-gray-600 p-2 rounded mb-2 overflow-x-auto"
+                          >
+                            <code {...props} />
+                          </pre>
+                        ),
+                    }}
+                  >
+                    {message.text}
+                  </ReactMarkdown>
                 </div>
               </div>
             </div>
