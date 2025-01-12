@@ -15,7 +15,7 @@ function RootLayout() {
       disableTransitionOnChange
     >
       <div className="app-container">
-        <App campaign_id={"29e4fed1-de1b-474e-8e0e-a3bbd21a7d76"} />
+        <App campaign_id={"b220297e-c639-4cd1-8ed9-4ea60cf386c5"} />
         {/* You can add other components or routes here */}
       </div>
     </ThemeProvider>
