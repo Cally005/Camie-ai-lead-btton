@@ -52,7 +52,7 @@ const CommunicationModal = ({
             <div className="flex items-start gap-3">
               <div className="w-12 h-12 flex-shrink-0">
                 <img
-                  src="/src/assets/love.gif"
+                  src="https://camie-ace.github.io/camie-animated-box/love.gif"
                   alt="Love animation"
                   className="w-full h-full object-cover rounded-md"
                 />
@@ -83,7 +83,7 @@ const CommunicationModal = ({
             aria-label="Open communication options"
           >
             <img
-              src="/src/assets/love.gif"
+              src="https://camie-ace.github.io/camie-animated-box/love.gif"
               alt="Love animation"
               className="h-full w-full object-cover"
               loading="lazy"
@@ -101,43 +101,57 @@ const CommunicationModal = ({
 
           <div className="w-full max-w-[200px] aspect-square">
             <img
-              src="/src/assets/love.gif"
+              src="https://camie-ace.github.io/camie-animated-box/love.gif"
               alt="Love animation"
               className="w-full h-full object-contain"
               loading="lazy"
             />
           </div>
+          {ctaText === "Book Appointment" ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mt-4">
+              <CommunicationOption
+                icon={MessageCircleIcon}
+                title="Chat with Me"
+                description="Text-based communication for quick exchanges."
+                onClick={() => handleSelection("chat")}
+                className="col-span-2"
+              />
 
-          <div
-            className={`grid grid-cols-1 sm:grid-cols-${
-              ctaText === "Book Appointment" ? "3" : "2"
-            } md:grid-cols-${
-              ctaText === "Book Appointment" ? "3" : "2"
-            } gap-4 w-full mt-4`}
-          >
-            <CommunicationOption
-              icon={MessageCircleIcon}
-              title="Chat with Me"
-              description="Text-based communication for quick exchanges."
-              onClick={() => handleSelection("chat")}
-            />
+              <CommunicationOption
+                icon={MicIcon}
+                title="Talk with Audio"
+                description="Voice-based interaction for more personal conversations."
+                onClick={() => handleSelection("voice")}
+                className="col-span-2"
+              />
 
-            <CommunicationOption
-              icon={MicIcon}
-              title="Talk with Audio"
-              description="Voice-based interaction for more personal conversations."
-              onClick={() => handleSelection("voice")}
-            />
-
-            {ctaText === "Book Appointment" && (
               <CommunicationOption
                 icon={CalendarIcon}
                 title={ctaText}
                 description="Schedule a time that works best for you."
+                className="col-auto"
                 onClick={() => handleSelection("appointment")}
               />
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mt-4">
+              <CommunicationOption
+                icon={MessageCircleIcon}
+                title="Chat with Me"
+                description="Text-based communication for quick exchanges."
+                onClick={() => handleSelection("chat")}
+                className="col-span-2"
+              />
+
+              <CommunicationOption
+                icon={MicIcon}
+                title="Talk with Audio"
+                description="Voice-based interaction for more personal conversations."
+                onClick={() => handleSelection("voice")}
+                className="col-span-2"
+              />
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
