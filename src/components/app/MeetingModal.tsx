@@ -4,7 +4,7 @@ interface ModalProps {
   vapiResponse?: any; // Optional function
   closeMessage?: string; // Optional custom message on close
   className?: string; // Optional style message on close
-  link?: string;//
+  link?: string; //
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({
             {/* Calendly iframe */}
             <div className="mt-4">
               <iframe
-                src= {link}
+                src={link}
                 width="100%"
                 height="600"
                 frameBorder="0"
