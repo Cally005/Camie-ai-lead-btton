@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Send, Moon, Sun } from "lucide-react";
 import Modal from "@/components/app/MeetingModal";
 
-export function ChatInterface() {
+export function ChatInterface({ campaign_id }) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export function ChatInterface() {
         action: "start-stream",
         thread_id: threadId,
         question: "Hello, Good Day",
-        campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
+        campaign_id,
       });
 
       let aiResponse =
@@ -89,7 +89,7 @@ export function ChatInterface() {
       try {
         const response = await callAiChatEndpoint({
           action: "create-thread",
-          campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
+          campaign_id,
         });
 
         if (response.data.status) {
@@ -121,7 +121,7 @@ export function ChatInterface() {
         action: "start-stream",
         thread_id: threadId,
         question: userMessage,
-        campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76",
+        campaign_id,
       });
 
       console.log("API Response:", response.data);
@@ -179,7 +179,7 @@ export function ChatInterface() {
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/call-to-action",
-          { campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" },
+          { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
         setCtaText(response.data.data.call_to_action || "Book Appointment");

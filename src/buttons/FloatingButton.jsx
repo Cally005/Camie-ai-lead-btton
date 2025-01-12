@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CommunicationModal from "@/components/app/CommunicationModal";
 
-export function FloatingButton() {
+export function FloatingButton({ campaign_id }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showBox, setShowBox] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -32,7 +32,7 @@ export function FloatingButton() {
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/leads-note",
-          { campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76" },
+          { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
 
@@ -87,7 +87,7 @@ export function FloatingButton() {
       try {
         const response = await axios.post(
           "https://camie-ai.onrender.com/api/v0/ai/call-to-action",
-          { campaign_id: "29e4fed1-de1b-474e-8e0e-a3bbd21a7d76" },
+          { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
         setCtaText(response.data.data.call_to_action || "Book Appointment");
@@ -150,6 +150,7 @@ export function FloatingButton() {
     setBookMeeting,
     setMeetingResponse,
     handleSelection,
+    campaign_id,
   });
 }
 
