@@ -273,7 +273,7 @@ export function ChatInterface({ campaign_id }) {
               <div className="flex items-start gap-3 max-w-[90%]">
                 {!message.user && (
                   <img
-                    src="/src/assets/love.gif"
+                    src="https://camie-ace.github.io/camie-animated-box/love.gif"
                     alt="AI"
                     className="w-8 h-8 rounded-full shrink-0"
                   />
@@ -303,7 +303,7 @@ export function ChatInterface({ campaign_id }) {
           {loading && (
             <div className="flex justify-start items-center gap-3">
               <img
-                src="/src/assets/love.gif"
+                src="https://camie-ace.github.io/camie-animated-box/love.gif"
                 alt="AI"
                 className="w-8 h-8 rounded-full "
               />

@@ -52,7 +52,7 @@ const CommunicationModal = ({
             <div className="flex items-start gap-3">
               <div className="w-12 h-12 flex-shrink-0">
                 <img
-                  src="/src/assets/love.gif"
+                  src="https://camie-ace.github.io/camie-animated-box/love.gif"
                   alt="Love animation"
                   className="w-full h-full object-cover rounded-md"
                 />
@@ -83,7 +83,7 @@ const CommunicationModal = ({
             aria-label="Open communication options"
           >
             <img
-              src="/src/assets/love.gif"
+              src="https://camie-ace.github.io/camie-animated-box/love.gif"
               alt="Love animation"
               className="h-full w-full object-cover"
               loading="lazy"
@@ -101,7 +101,7 @@ const CommunicationModal = ({
 
           <div className="w-full max-w-[200px] aspect-square">
             <img
-              src="/src/assets/love.gif"
+              src="https://camie-ace.github.io/camie-animated-box/love.gif"
               alt="Love animation"
               className="w-full h-full object-contain"
               loading="lazy"
