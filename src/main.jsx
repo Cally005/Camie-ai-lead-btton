@@ -41,6 +41,7 @@ function camieAIFloatingButton({ campaign_id }) {
   );
 }
 
+// providing it to the window context
 if (typeof window !== "undefined") {
   window.camieAIFloatingButton = camieAIFloatingButton;
 }
