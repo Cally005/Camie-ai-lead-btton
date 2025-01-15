@@ -14,6 +14,7 @@ export function VoiceInterface({ campaign_id }: { campaign_id: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [connecting, setConnecting] = useState(false);
   const [assistantOptions, setAssistantOptions] = useState(null);
+  const [assistantId, setAssistantId] = useState(null);
   const [connected, setConnected] = useState(false);
   const [ctaText, setCtaText] = useState("Book Appointment");
   const [bookMeeting, setBookMeeting] = useState(false);
@@ -89,6 +90,13 @@ export function VoiceInterface({ campaign_id }: { campaign_id: string }) {
     fetchCtaText();
   }, []);
 
+  useEffect(() => {
+    if (assistantId && assistantOptions) {
+      console.log(assistantId);
+      console.log(assistantOptions);
+      startCallInline();
+    }
+  }, [assistantId, assistantOptions]);
   //fetch assiatant config
   useEffect(() => {
     const assistantConfig = async () => {
@@ -106,6 +114,7 @@ export function VoiceInterface({ campaign_id }: { campaign_id: string }) {
         );
         console.log(response);
         setAssistantOptions(response.data.data.assistant);
+        setAssistantId(response.data.data.assistantId);
         setLink(response.data.data.meeting_link);
       } catch (error) {
         console.error("Error fetching assistant:", error);
@@ -135,7 +144,7 @@ export function VoiceInterface({ campaign_id }: { campaign_id: string }) {
 
   // Enhanced call start handler
   const startCallInline = async () => {
-    if (assistantOptions) {
+    if (assistantOptions && assistantId) {
       try {
         await navigator.mediaDevices.getUserMedia({ audio: true });
         setConnecting(true);
@@ -143,7 +152,7 @@ export function VoiceInterface({ campaign_id }: { campaign_id: string }) {
         setMicPermission(true);
 
         // Use the ref to access the Vapi instance
-        await vapiRef.current.start(assistantOptions as object);
+        await vapiRef.current.start(assistantId, assistantOptions as object);
       } catch (error) {
         console.error("Microphone access denied:", error);
         setMicPermission(false);

@@ -37,38 +37,6 @@ export function ChatInterface({ campaign_id }) {
     );
   };
 
-  // Function to get initial message from AI
-  const getInitialMessage = async (threadId) => {
-    try {
-      setLoading(true);
-      const response = await callAiChatEndpoint({
-        action: "start-stream",
-        thread_id: threadId,
-        question: "Hello, Good Day",
-        campaign_id,
-      });
-
-      let aiResponse =
-        response.data?.data?.text?.value ||
-        response.data?.data?.text ||
-        response.data?.text ||
-        "Hello! I'm here to help you today. What would you like to discuss?";
-
-      setMessages([{ user: false, text: aiResponse }]);
-      setHideHeader(true);
-    } catch (error) {
-      console.error("Error getting initial message:", error);
-      setMessages([
-        {
-          user: false,
-          text: "Hello! I'm here to help you today. What would you like to discuss?",
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     function displayLoadingMessage() {
       // Update message every 2 seconds
@@ -96,7 +64,7 @@ export function ChatInterface({ campaign_id }) {
         if (response.data.status) {
           const newThreadId = response.data.data.id;
           setThreadId(newThreadId);
-          // await getInitialMessage(newThreadId);
+          setMessages([{ user: false, text: response.data.data.text }]);
         } else {
           console.error("Thread ID creation failed:", response.data);
         }
