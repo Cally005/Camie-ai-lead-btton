@@ -28,6 +28,7 @@ export function FloatingButton() {
   const [bubbleText, setBubbleText] = useState("");
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [ctaText, setCtaText] = useState("");
+  const[ staticText, setStaticText] = useState("");
   const [bookMeeting, setBookMeeting] = useState(false);
   const [meetingResponse, setMeetingResponse] = useState(null);
   const timers = useRef([]);
@@ -77,18 +78,26 @@ export function FloatingButton() {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchCtaText = async () => {
-      try {
-        const response = await axios.post("https://camie-ai.onrender.com/api/v0/ai/call-to-action");
-        setCtaText(response.data.data.call_to_action || "Book Appointment");
-      } catch (error) {
-        console.error("Failed to fetch CTA text:", error);
-      }
-    };
 
-    fetchCtaText();
-  }, []);
+useEffect(() => {
+  const fetchCtaText = async () => {
+    try {
+      const response = await axios.post("https://camie-ai.onrender.com/api/v0/ai/call-to-action",
+      {  campaign_id : "b220297e-c639-4cd1-8ed9-4ea60cf386c5"},   
+      { headers: { "Content-Type": "application/json" } }
+    )
+    console.log(response.data.data.call_to_action )
+      setCtaText(response.data.data.call_to_action || "Book Appointment");
+    } catch (error) {
+      console.error("Failed to fetch CTA text:", error);
+    }
+  
+  };
+
+  fetchCtaText();
+}, []);
+
+
 
   useEffect(() => {
     if (meetingResponse) {
@@ -148,7 +157,7 @@ export function FloatingButton() {
               </div>
               <div className="flex-grow">
                 <p className="text-sm md:text-base text-gray-800 mb-4">
-                  Hey! Wanna Know more about me?
+                  {/* Hey! Wanna Know more about me? */} {ctaText}
                 </p>
                 <button
                   onClick={handleButtonClick}
