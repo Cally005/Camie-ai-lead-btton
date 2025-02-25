@@ -12,17 +12,19 @@ function RootLayout() {
   }, []);
 
   return (
+   
     <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <div className="app-container">
-        <App />
-        {/* You can add other components or routes here */}
-      </div>
-    </ThemeProvider>
+    attribute="class"
+    defaultTheme="system"
+    enableSystem
+    disableTransitionOnChange
+  >
+    <div className="app-container">
+      <App />
+ 
+    </div>
+  </ThemeProvider>
+    
   );
 }
 

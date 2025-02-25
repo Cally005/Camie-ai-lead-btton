@@ -9,7 +9,17 @@ import Modal from "@/components/app/MeetingModal";
 import axios from "axios";
 
 
-export default function VoiceInterface() {
+
+
+export default function VoiceInterface({
+  voiceTheme,
+  setVoiceTheme,
+  handleMOdalClose
+}: {
+  voiceTheme: string;
+  setVoiceTheme: (theme?: string) => void;
+  handleMOdalClose: (state?: boolean) => void;
+}) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [micPermission, setMicPermission] = useState<boolean | null>(null);
   const { resolvedTheme, setTheme } = useTheme();
@@ -91,7 +101,7 @@ export default function VoiceInterface() {
     const assistantConfig = async () => {
       try {
         const response = await axios.post(
-          "https://camie-ai.onrender.com/api/v0/ai/voice",
+          "http://localhost:5000/api/v0/voice",
           {
             campaign_id: "67ca79db-608a-4a9b-95ad-53558186ac37",
           },
@@ -303,8 +313,13 @@ export default function VoiceInterface() {
   );
 
   return (
-    <div className="flex justify-center items-center mt-20 relative">
-     {assistantOptions ?  <div className="flex flex-col justify-center items-center mt-auto relative w-full max-w-md">
+  
+    <div className={`flex justify-center items-center mt-20 relative chat-modal ${
+      voiceTheme === "dark" ? "dark" : ""
+    }`}
+  >
+     
+     {assistantOptions ?  <div className="flex flex-col justify-center items-center mt-auto relative w-full max-w-md ">
         <Card
           className={`
               flex justify-center items-center w-[180px] h-[180px] mx-auto rounded-full 
@@ -349,10 +364,14 @@ export default function VoiceInterface() {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            onClick={() => {
+              const newTheme = voiceTheme === "dark" ? "light" : "dark";
+              setVoiceTheme(newTheme);
+              // The parent dialog will automatically update due to the class changes
+            }}
             className="hover:bg-accent"
           >
-            {resolvedTheme === "dark" ? (
+            {voiceTheme === "dark" ? (
               <Sun className="h-5 w-5" />
             ) : (
               <Moon className="h-5 w-5" />
@@ -360,7 +379,7 @@ export default function VoiceInterface() {
           </Button>
         </div>
       </div> : "loading..."}
-
+ 
       {/* Modal remains the same */}
       <Modal
         isOpen={bookMeeting}
@@ -368,9 +387,12 @@ export default function VoiceInterface() {
         vapiResponse={setMeetingResponse}
         link = {link!}
       />
+   
     </div>
+
   );
 }
+
 
 
 

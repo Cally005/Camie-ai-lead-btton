@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({
   isOpen,
   setOpen,
   vapiResponse,
-  link = "https://tidycal.com/camie/camieai",
+  link,
   closeMessage = "The user has booked the meeting greet and thank the user, but we also sell story books to help children brush well", // Default message
   className,
 }) => {
@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({
             {/* Calendly iframe */}
             <div className="mt-4">
               <iframe
-                src= {link}
+                src={link}
                 width="100%"
                 height="600"
                 frameBorder="0"

@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { MessageCircleIcon, MicIcon, XIcon, CalendarIcon } from "lucide-react";
 import ChatInterface from "./ChatInterface";
 import axios from "axios";
+
 import VoiceInterface from "./Voiceinterface";
 import Modal from "@/components/app/MeetingModal";
 
@@ -28,6 +29,8 @@ export function FloatingButton() {
   const [bubbleText, setBubbleText] = useState("");
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [ctaText, setCtaText] = useState("");
+  const [chatTheme, setChatTheme] = useState(false);
+  const [voiceTheme, setVoiceTheme] = useState(false);
   const[ staticText, setStaticText] = useState("");
   const [bookMeeting, setBookMeeting] = useState(false);
   const [meetingResponse, setMeetingResponse] = useState(null);
@@ -189,6 +192,7 @@ useEffect(() => {
       </div>
 
       <Dialog open={isOpen} onOpenChange={handleDialogClose}>
+     
         <DialogContent className="flex flex-col items-center gap-4 md:gap-8 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-6 overflow-y-auto dark:bg-gray-900 dark:text-white">
           <h2 className="text-xl md:text-3xl font-semibold text-center mb-2 md:mb-4">
             How do you want us to communicate?
@@ -237,23 +241,43 @@ useEffect(() => {
             )}
           </div>
         </DialogContent>
+      
       </Dialog>
 
       {modalType === "chat" && (
         <Dialog open={true} onOpenChange={handleModalClose}>
-          <DialogContent className="flex items-center justify-center rounded-lg w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px]">
-            <ChatInterface handleModalClose={handleModalClose} />
+          
+          <DialogContent
+            // Here we add a wrapper class based on chatTheme.
+            className={`flex flex-col rounded-lg shadow-xl w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px] p-4 
+               ${chatTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
+            {/* 
+                Pass the chatTheme and setChatTheme down to ChatInterface so that its internal 
+                container (which you already set up using custom properties) will be consistent.
+            */}
+            <ChatInterface
+              chatTheme={chatTheme}
+              setChatTheme={setChatTheme}
+              handleModalClose={handleModalClose}
+            />
+
           </DialogContent>
+       
         </Dialog>
       )}
 
       {modalType === "voice" && (
         <Dialog open={true} onOpenChange={handleModalClose}>
-          <DialogContent className="flex flex-col items-center gap-4 rounded-lg shadow-xl bg-white w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-8 dark:bg-gray-900 dark:text-white">
+          <DialogContent className={`flex flex-col items-center gap-4 rounded-lg shadow-xl w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-8 
+              ${voiceTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
             <h2 className="text-xl md:text-2xl font-semibold text-center">
               Tap to speak
             </h2>
-            <VoiceInterface />
+            <VoiceInterface 
+             voiceTheme={voiceTheme}
+             setVoiceTheme={setVoiceTheme}
+             handleModalClose={handleModalClose}
+             />
           </DialogContent>
         </Dialog>
       )}
@@ -273,6 +297,29 @@ useEffect(() => {
 }
 
 export default FloatingButton;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //working well
 // import { useEffect, useState, useRef } from "react";

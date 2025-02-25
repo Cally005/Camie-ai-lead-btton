@@ -85,10 +85,7 @@ export default {
 				'100%': { transform: 'rotate(360deg)' },
 			  },
 
-			//   wave: {
-			// 	'0%, 100%': { transform: 'scaleX(1)', opacity: '0.5' },
-			// 	'50%': { transform: 'scaleX(1.5)', opacity: '1' },
-			//   },
+		
 			waveLeft: {
 				"0%, 100%": { transform: "translateX(-50%) scaleX(1)", opacity: "0.5" },
 				"50%": { transform: "translateX(0) scaleX(2)", opacity: "1" },
