@@ -1,4 +1,3 @@
-import React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { XIcon, MessageCircleIcon, MicIcon, CalendarIcon } from "lucide-react";
 import { BubbleText } from "./BubbleText";
