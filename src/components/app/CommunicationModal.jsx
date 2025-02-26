@@ -59,7 +59,7 @@ const CommunicationModal = ({
               </div>
               <div className="flex-grow">
                 <p className="text-sm text-gray-800 mb-2">
-                  Hey! Wanna know more about me?
+                  Hey! Wanna know more about me?jkjkj
                 </p>
                 <button
                   onClick={handleButtonClick}
