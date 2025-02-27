@@ -14,6 +14,8 @@ export function FloatingButton({ campaign_id }) {
   const [meetingResponse, setMeetingResponse] = useState(null);
   const fetchIntervalRef = useRef(null);
   const shouldFetch = useRef(true);
+  const [chatTheme, setChatTheme] = useState(false);
+  const [voiceTheme, setVoiceTheme] = useState(false);
 
   // Initial delay for showing the box
   useEffect(() => {
@@ -31,7 +33,7 @@ export function FloatingButton({ campaign_id }) {
 
       try {
         const response = await axios.post(
-          "https://camie-ai.onrender.com/api/v0/ai/leads-note",
+          "http://localhost:5000/api/v0/leads-note",
           { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
@@ -86,7 +88,7 @@ export function FloatingButton({ campaign_id }) {
     const fetchCtaText = async () => {
       try {
         const response = await axios.post(
-          "https://camie-ai.onrender.com/api/v0/ai/call-to-action",
+          "http://localhost:5000/api/v0/cta",
           { campaign_id },
           { headers: { "Content-Type": "application/json" } }
         );
@@ -151,6 +153,10 @@ export function FloatingButton({ campaign_id }) {
     setMeetingResponse,
     handleSelection,
     campaign_id,
+    setChatTheme,
+    chatTheme,
+    voiceTheme, 
+    setVoiceTheme
   });
 }
 

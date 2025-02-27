@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { XIcon, MessageCircleIcon, MicIcon, CalendarIcon } from "lucide-react";
@@ -5,6 +6,7 @@ import { BubbleText } from "./BubbleText";
 import { ChatInterface } from "./ChatInterface";
 import { VoiceInterface } from "./Voiceinterface";
 import Modal from "./MeetingModal";
+
 
 const CommunicationModal = ({
   showBox,
@@ -22,6 +24,10 @@ const CommunicationModal = ({
   setMeetingResponse,
   handleSelection,
   campaign_id,
+  setChatTheme,
+  chatTheme,
+  voiceTheme, 
+  setVoiceTheme
 }) => {
   const CommunicationOption = ({ icon: Icon, title, description, onClick }) => (
     <div
@@ -35,6 +41,8 @@ const CommunicationModal = ({
       </p>
     </div>
   );
+
+ 
 
   return (
     <>
@@ -59,7 +67,7 @@ const CommunicationModal = ({
               </div>
               <div className="flex-grow">
                 <p className="text-sm text-gray-800 mb-2">
-                  Hey! Wanna know more about me?jkjkj
+                  {bubbleText}
                 </p>
                 <button
                   onClick={handleButtonClick}
@@ -156,17 +164,24 @@ const CommunicationModal = ({
       </Dialog>
 
       {/* Modal Content Based on Type */}
-      {modalType && (
+      {/* {modalType && (
         <Dialog open={true} onOpenChange={handleModalClose}>
-          <DialogContent className="flex items-center justify-center rounded-lg w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px] dark:bg-gray-900 dark:text-white">
+          <DialogContent className={`flex items-center justify-center rounded-lg w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px] dark:bg-gray-900 dark:text-white 
+             ${chatTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}
+             ${voiceTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
             {modalType === "chat" && (
               <ChatInterface
+               chatTheme={chatTheme}
+               setChatTheme={setChatTheme}
                 handleModalClose={handleModalClose}
                 campaign_id={campaign_id}
               />
             )}
             {modalType === "voice" && (
-              <VoiceInterface campaign_id={campaign_id} />
+              <VoiceInterface 
+              voiceTheme={voiceTheme}
+               setVoiceTheme={setVoiceTheme}
+              campaign_id={campaign_id} />
             )}
             {modalType === "appointment" && (
               <Modal
@@ -177,6 +192,57 @@ const CommunicationModal = ({
               />
             )}
           </DialogContent>
+        </Dialog>
+      )} */}
+
+{modalType === "chat" && (
+        <Dialog open={true} onOpenChange={handleModalClose}>
+          
+          <DialogContent
+            // Here we add a wrapper class based on chatTheme.
+            className={`flex flex-col rounded-lg shadow-xl w-[95vw] md:w-[40vw] h-[90vh] max-w-[1200px] p-4 
+               ${chatTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
+            {/* 
+                Pass the chatTheme and setChatTheme down to ChatInterface so that its internal 
+                container (which you already set up using custom properties) will be consistent.
+            */}
+            <ChatInterface
+              chatTheme={chatTheme}
+              setChatTheme={setChatTheme}
+              handleModalClose={handleModalClose}
+              campaign_id={campaign_id}
+            />
+
+          </DialogContent>
+       
+        </Dialog>
+      )}
+
+      {modalType === "voice" && (
+        <Dialog open={true} onOpenChange={handleModalClose}>
+          <DialogContent className={`flex flex-col items-center gap-4 rounded-lg shadow-xl w-[95vw] md:w-[80vw] h-[90vh] md:h-[80vh] max-w-[1000px] p-4 md:p-8 
+              ${voiceTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
+            <h2 className="text-xl md:text-2xl font-semibold text-center">
+              Tap to speak
+            </h2>
+            <VoiceInterface 
+             voiceTheme={voiceTheme}
+             setVoiceTheme={setVoiceTheme}
+             campaign_id={campaign_id}
+             handleModalClose={handleModalClose}
+             />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {modalType === "appointment" && (
+        <Dialog open={true} onOpenChange={handleModalClose}>
+          <Modal
+            isOpen={bookMeeting}
+            setOpen={setBookMeeting}
+            className="w-full h-full"
+            setMeeting={setMeetingResponse}
+          />
         </Dialog>
       )}
     </>

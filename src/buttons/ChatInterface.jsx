@@ -5,81 +5,10 @@ import axios from "axios";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Moon, Sun, X } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Send, Moon, Sun } from "lucide-react";
 import Modal from "@/components/app/MeetingModal";
 
 
-// Booking Form Component
-function BookingForm({ open, onOpenChange, onSubmit }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" 
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3000/api/data", formData);
-      if (response.data.status) {
-        onSubmit(formData);
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Book Your Appointment</DialogTitle>
-          <DialogDescription>
-            Enter your details to book an appointment with Camie Pixel.
-          </DialogDescription>
-        </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-1">
-              Name
-            </label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              required
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-1">
-              Email
-            </label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              required
-            />
-          </div>
-          
-          <Button type="submit" className="w-full">
-            Book Now
-          </Button>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 
 
@@ -87,17 +16,13 @@ function BookingForm({ open, onOpenChange, onSubmit }) {
 export default function ChatInterface({chatTheme,
   setChatTheme,
   handleModalClose}) 
-  
   {
-    
-  const [isModalDark, setIsModalDark] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
   const [threadId, setThreadId] = useState(null);
-  const [showCalendly, setShowCalendly] = useState(false);
   const [bookMeeeting, setBookMeeting] = useState(false);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -229,9 +154,7 @@ export default function ChatInterface({chatTheme,
   }, [messages, loading]);
 
   return (
-<main   className={`relative w-full h-full chat-modal ${
-      chatTheme === "dark"  ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
-   
+    <main className="relative w-full h-full">
       <div className="flex flex-col w-full h-full">
         {!hideHeader && (
           <div className="p-4 text-center border-b">
@@ -271,9 +194,9 @@ export default function ChatInterface({chatTheme,
                 max-w-full p-3 rounded-lg break-words
                 ${
                   message.user
-                    ? "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
-                  : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]"}
-                
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-foreground"
+                }
               `}
                 >
                   <p>{message.text}</p>
@@ -301,7 +224,7 @@ export default function ChatInterface({chatTheme,
         </div>
 
         {/* Input Area */}
-        <div className="p-4 border-t border-[hsl(var(--border))]">
+        <div className="p-4 border-t">
           <div className="relative">
             <Input
               value={inputText}
@@ -320,16 +243,15 @@ export default function ChatInterface({chatTheme,
               }`}
             />
             <div className="absolute right-0 top-0 h-full flex items-center space-x-2 pr-2">
-            <Button
+              <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => {
-                  const newTheme = chatTheme === "dark" ? "light" : "dark";
-                  setChatTheme(newTheme);
-                }}
+                onClick={() =>
+                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                }
                 className="hover:bg-accent"
               >
-                {chatTheme === "dark" ? (
+                {resolvedTheme === "dark" ? (
                   <Sun className="h-5 w-5" />
                 ) : (
                   <Moon className="h-5 w-5" />
@@ -352,22 +274,11 @@ export default function ChatInterface({chatTheme,
 
         {/* Modal remains the same */}
       </div>
-      <BookingForm
-        open={showBookingForm}
-        onOpenChange={setShowBookingForm}
-        onSubmit={handleFormSubmit}
+      <Modal
+        isOpen={bookMeeeting}
+        setOpen={setBookMeeting}
+        className="absolute  w-full h-full"
       />
-
-      {showCalendly && (
-        <Modal
-          isOpen={showCalendly}
-          setOpen={setShowCalendly}
-          className="absolute w-full h-full"
-          link={`https://tidycal.com/camie/camieai?email=${encodeURIComponent(userDetails.email)}&name=${encodeURIComponent(userDetails.name)}`}
-        
-        />
-      )}
-     
     </main>
   );
 }
