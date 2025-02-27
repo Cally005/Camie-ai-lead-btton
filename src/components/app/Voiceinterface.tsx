@@ -493,35 +493,43 @@ import {
 } from "@/components/ui/dialog";
 
 interface FormData {
-  first_name: string;
-  email: string;
+  name: string;
+  primary_email: string;
   campaign_id: string;
+  lead_source: string;
+  company_id: string;
 }
 
 interface BookingFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: FormData) => void;
+  voiceTheme: any;
+  setVoiceTheme: any;
 }
 
 interface UserDetails {
-  first_name: string;
-  email: string;
+  name: string;
+  primary_email: string;
   campaign_id: string;
+  lead_source: string;
+  company_id:string;
 }
 
 // Booking Form Component
-function BookingForm({ open, onOpenChange, onSubmit }: BookingFormProps) {
+function BookingForm({ open, onOpenChange, onSubmit, voiceTheme, setVoiceTheme }: BookingFormProps) {
   const [formData, setFormData] = useState<FormData>({
-    first_name: '',
-    email: '',
-    campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" 
+    name: '',
+    primary_email: '',
+    campaign_id: "7ff77bf9-c7e2-4de7-926c-fa7b10d4eda9",
+    lead_source: "camie_pixels",
+    company_id:"bb5e2249-b1e8-4c61-af78-27832445fa3c",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/v0/test-leads", {
+      const response = await fetch("http://localhost:5000/api/v0/leads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -539,7 +547,9 @@ function BookingForm({ open, onOpenChange, onSubmit }: BookingFormProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={`sm:max-w-md chat-modal ${
+      voiceTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"
+      }`}>
         <DialogHeader>
           <DialogTitle>Book Your Appointment</DialogTitle>
           <DialogDescription>
@@ -554,9 +564,9 @@ function BookingForm({ open, onOpenChange, onSubmit }: BookingFormProps) {
             </label>
             <Input
               id="name"
-              value={formData.first_name}
+              value={formData.name}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                setFormData(prev => ({ ...prev, first_name: e.target.value }))}
+                setFormData(prev => ({ ...prev, name: e.target.value }))}
               required
             />
           </div>
@@ -568,9 +578,9 @@ function BookingForm({ open, onOpenChange, onSubmit }: BookingFormProps) {
             <Input
               id="email"
               type="email"
-              value={formData.email}
+              value={formData.primary_email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                setFormData(prev => ({ ...prev, email: e.target.value }))}
+                setFormData(prev => ({ ...prev, primary_email: e.target.value }))}
               required
             />
           </div>
@@ -591,8 +601,8 @@ export function VoiceInterface({
   handleMOdalClose 
 }: { 
   campaign_id: string;
-  voiceTheme: string;
-  setVoiceTheme: (theme?: string) => void;
+  voiceTheme: any;
+  setVoiceTheme: (theme?: any) => void;
   handleMOdalClose: (state?: boolean) => void;
 }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -614,6 +624,16 @@ export function VoiceInterface({
   const [micStream, setMicStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
   const BASE_URL = "http://localhost:5000/api/v0";
+
+
+  useEffect(() => {
+    // Only set theme if it hasn't been manually set already
+    if (voiceTheme=== false ||  voiceTheme === undefined) {
+      // Check if user prefers dark mode
+      const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setVoiceTheme(prefersDarkMode ? "dark" : "light");
+    }
+  }, []);
 
   // Create a ref to store the Vapi instance
   const vapiRef = useRef<any>(null);
@@ -855,9 +875,11 @@ export function VoiceInterface({
 
   const handleFormSubmit = (formData: FormData): void => {
     setUserDetails({
-      first_name: formData.first_name,
-      email: formData.email,
-      campaign_id: formData.campaign_id
+      name: formData.name,
+      primary_email: formData.primary_email,
+      campaign_id: formData.campaign_id,
+      lead_source:formData.lead_source,
+      company_id: formData.campaign_id
     });
     setShowBookingForm(false);
     setShowCalendly(true);
@@ -1037,16 +1059,20 @@ export function VoiceInterface({
         open={showBookingForm}
         onOpenChange={setShowBookingForm}
         onSubmit={handleFormSubmit}
+        voiceTheme={voiceTheme}  // Pass the theme
+        setVoiceTheme={setVoiceTheme}  // Optional: pass setter if you want to allow theme changes in the form
       />
 
-      {/* Calendly modal */}
-      {showCalendly && userDetails && (
+      {showCalendly && (
         <Modal
-          isOpen={showCalendly}
-          setOpen={setShowCalendly}
-          className="absolute w-full h-full"
-          link={`https://tidycal.com/camie/camieai?email=${encodeURIComponent(userDetails.email || '')}&name=${encodeURIComponent(userDetails.first_name || '')}`}
-        />
+        isOpen={showCalendly}
+        setOpen={setShowCalendly}
+        className={`absolute w-full h-full ${
+          voiceTheme === "dark" ? "dark-theme" : "light-theme"
+        }`}
+        link={`https://tidycal.com/camie/camieai?email=${encodeURIComponent(userDetails?.primary_email || '')}&name=${encodeURIComponent(userDetails?.name || '')}`}
+        // voiceTheme={voiceTheme}
+      />
       )}
     </div>
   );

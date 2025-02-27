@@ -16,17 +16,19 @@ import {
 } from "@/components/ui/dialog";
 
 // Booking Form Component
-function BookingForm({ open, onOpenChange, onSubmit }) {
+export function BookingForm({ open, onOpenChange, onSubmit, chatTheme, setChatTheme  }) {
   const [formData, setFormData] = useState({
-    first_name: '',
-    email: '',
-    campaign_id: "e3d83007-37bd-4bfc-a186-c542f3ce5d49" 
+    name: '',
+    primary_email: '',
+    campaign_id: "7ff77bf9-c7e2-4de7-926c-fa7b10d4eda9",
+    lead_source:"camie_pixels",
+    company_id:"bb5e2249-b1e8-4c61-af78-27832445fa3c",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/v0/test-leads", {
+      const response = await fetch("http://localhost:5000/api/v0/leads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +46,9 @@ function BookingForm({ open, onOpenChange, onSubmit }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={`sm:max-w-md chat-modal ${
+      chatTheme === "dark" ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"
+      }`}>
         <DialogHeader>
           <DialogTitle>Book Your Appointment</DialogTitle>
           <DialogDescription>
@@ -59,8 +63,8 @@ function BookingForm({ open, onOpenChange, onSubmit }) {
             </label>
             <Input
               id="name"
-              value={formData.first_name}
-              onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               required
             />
           </div>
@@ -72,8 +76,8 @@ function BookingForm({ open, onOpenChange, onSubmit }) {
             <Input
               id="email"
               type="email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              value={formData.primary_email}
+              onChange={(e) => setFormData(prev => ({ ...prev, primary_email: e.target.value }))}
               required
             />
           </div>
@@ -109,6 +113,15 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
  
 
   const BASE_URL = "http://localhost:5000/api/v0";
+
+  useEffect(() => {
+    // Only set theme if it hasn't been manually set already
+    if (chatTheme === false || chatTheme === undefined) {
+      // Check if user prefers dark mode
+      const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setChatTheme(prefersDarkMode ? "dark" : "light");
+    }
+  }, []);
 
   // Function to handle SSE responses
   const handleSSEResponse = (url, options, onEvent) => {
@@ -205,7 +218,7 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
   useEffect(() => {
     const initializeChat = async () => {
       try {
-        setLoading(true); // Set loading to true during initialization
+        // setLoading(true); // Set loading to true during initialization
         await postAndHandleSSE(
           `${BASE_URL}/chat`,
           {
@@ -218,7 +231,7 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
             } else if (data.type === "message") {
               setMessages([{ user: false, text: data.content }]);
               if (data.done) {
-                setLoading(false);
+                //setLoading(false)
                 setFirstMessageComplete(true); // Mark first message as complete
               }
             }
@@ -226,13 +239,14 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
         );
       } catch (error) {
         console.error("Error initializing chat:", error);
-        setLoading(false);
+        // setLoading(false);
         setFirstMessageComplete(true); // In case of error, enable input
       }
     };
 
     initializeChat();
   }, [campaign_id]);
+
   const fetchCtaText = async () => {
     try {
       const response = await fetch(
@@ -262,9 +276,11 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
 
   const handleFormSubmit = (formData) => {
     setUserDetails({
-      first_name: formData.first_name,
-      email: formData.email,
-      campaign_id: formData.campaign_id
+      name: formData.name,
+      primary_email: formData.primary_email,
+      campaign_id: formData.campaign_id,
+      lead_source: formData.lead_source,
+      company_id: formData.company_id
     });
     setShowBookingForm(false);
     setShowCalendly(true);
@@ -365,6 +381,8 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
     const messageText = inputText.trim();
     setMessages((prev) => [...prev, { user: true, text: messageText }]);
     setInputText("");
+   
+
   
     try {
       await postAndHandleSSE(
@@ -397,17 +415,19 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
                   // Update the existing AI response
                   const newMessages = [...prev];
                   newMessages[prev.length - 1].text = data.content;
+                  setLoading(false);
                   return newMessages;
                 } else if (!hasAIResponse) {
                   // Add a new AI message if there isn't one yet
                   return [...prev, { user: false, text: data.content }];
                 }
-                
+              
                 return prev;
               });
               
               if (data.done) {
-                setLoading(false);
+                // setLoading(false);
+           
               }
               break;
             
@@ -663,15 +683,20 @@ export function ChatInterface({ campaign_id, chatTheme, setChatTheme }) {
         open={showBookingForm}
         onOpenChange={setShowBookingForm}
         onSubmit={handleFormSubmit}
+        chatTheme={chatTheme}  // Pass the theme
+        setChatTheme={setChatTheme}  // Optional: pass setter if you want to allow theme changes in the form
       />
 
       {showCalendly && (
         <Modal
-          isOpen={showCalendly}
-          setOpen={setShowCalendly}
-          className="absolute w-full h-full"
-          link={`https://tidycal.com/camie/camieai?email=${encodeURIComponent(userDetails?.email || '')}&name=${encodeURIComponent(userDetails?.first_name || '')}`}
-        />
+        isOpen={showCalendly}
+        setOpen={setShowCalendly}
+        className={`absolute w-full h-full ${
+          chatTheme === "dark" ? "dark-theme" : "light-theme"
+        }`}
+        link={`https://tidycal.com/camie/camieai?email=${encodeURIComponent(userDetails?.primary_email || '')}&name=${encodeURIComponent(userDetails?.name || '')}`}
+        chatTheme={chatTheme}
+      />
       )}
     </main>
   );

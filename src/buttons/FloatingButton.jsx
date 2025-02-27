@@ -17,6 +17,23 @@ export function FloatingButton({ campaign_id }) {
   const [chatTheme, setChatTheme] = useState(false);
   const [voiceTheme, setVoiceTheme] = useState(false);
 
+
+
+    // Add an effect to detect the user's system theme preference
+    useEffect(() => {
+      if (chatTheme === null) {
+        const prefersDarkMode = window.matchMedia && 
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setChatTheme(prefersDarkMode ? "dark" : "light");
+      }
+      
+      if (voiceTheme === null) {
+        const prefersDarkMode = window.matchMedia && 
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setVoiceTheme(prefersDarkMode ? "dark" : "light");
+      }
+    }, []);
+
   // Initial delay for showing the box
   useEffect(() => {
     const timer = setTimeout(() => {
