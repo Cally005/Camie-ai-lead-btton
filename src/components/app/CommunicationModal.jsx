@@ -163,6 +163,9 @@ const CommunicationModal = ({
         </DialogContent>
       </Dialog>
 
+
+
+      //do not uncomment when uncommenting 
       {/* Modal Content Based on Type */}
       {/* {modalType && (
         <Dialog open={true} onOpenChange={handleModalClose}>
@@ -195,7 +198,7 @@ const CommunicationModal = ({
         </Dialog>
       )} */}
 
-{modalType === "chat" && (
+ {modalType === "chat" && (
         <Dialog open={true} onOpenChange={handleModalClose}>
           
           <DialogContent
@@ -250,3 +253,6 @@ const CommunicationModal = ({
 };
 
 export default CommunicationModal;
+
+
+
